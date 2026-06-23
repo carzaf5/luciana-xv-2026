@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luciana | Mis XV Años</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --rosa-premium: #d47da3;
+            --rosa-suave: #fff0f5;
+            --texto-dark: #2c2c2c;
+            --blanco: #ffffff;
+            --rosa-oscuro: #b74776;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Bloqueo estricto inicial del scroll */
+        html, body {
+            overflow: hidden;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f5eff2;
+            color: var(--texto-dark);
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* --- EFECTO ANIMADO DE LLUVIA DE CORAZONES EN CAPA GLOBAL --- */
+        .contenedor-corazones-global {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 10005;
+        }
+
+        .corazon-lluvia {
+            position: absolute;
+            color: #ffb7d2;
+            opacity: 0;
+            animation: caidaCorazon linear infinite;
+        }
+
+        @keyframes caidaCorazon {
+            0% { transform: translateY(-20px) translateX(0) scale(0.5); opacity: 0; }
+            15% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(105vh) translateX(30px) scale(1.1); opacity: 0; }
+        }
+
+        /* --- PANTALLA DE BIENVENIDA CON FOTO4 DE FONDO --- */
+        #pantalla-bienvenida {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.5)), url('foto4.jpeg');
+            background-size: cover;
+            background-position: center;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            touch-action: none;
+        }
+
+        /* Zona de acceso fija abajo */
+        .zona-acceso-bienvenida {
+            margin-bottom: 60px;
+            z-index: 10002;
+            text-align: center;
+            width: 90%;
+        }
+
+        /* Bienvenidos a mis XV Años */
+        .titulo-bienvenida-texto {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.5rem;
+            color: #ffb7d2;
+            text-shadow: 2px 3px 15px rgba(0, 0, 0, 0.9), -1px -1px 0px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+            font-weight: 400;
+            line-height: 1.1;
+            display: block;
+        }
+
+        .btn-abrir-invitacion {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 36px;
+            background: var(--rosa-premium);
+            color: var(--blanco);
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-abrir-invitacion:active {
+            transform: scale(0.96);
+            background: #be658d;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL CON FONDO METALIZADO --- */
+        .wrapper-vip {
+            width: 100%;
+            max-width: 450px;
+            background: linear-gradient(135deg, #fff5f8 0%, #f3e1eb 25%, #eadef7 50%, #f3e1eb 75%, #fff5f8 100%);
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0,0,0,0.15);
+            position: relative;
+            padding-bottom: 60px;
+            display: none;
+            border-left: 1px solid rgba(255,255,255,0.6);
+            border-right: 1px solid rgba(255,255,255,0.6);
+        }
+
+        /* --- BOTÓN FLOTANTE MÚSICA MÍNIMO --- */
+        .audio-container-vip {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 999;
+        }
+
+        .btn-audio-vip {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--rosa-premium);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(2px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-audio-vip.playing {
+            animation: girarMusica 5s linear infinite;
+        }
+
+        /* --- PORTADA INTERNA --- */
+        .seccion-portada {
+            width: 100%;
+            position: relative;
+        }
+
+        .img-portada-vip {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* --- CONTENIDOS INTERNOS --- */
+        .seccion-contenido {
+            padding: 45px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .seccion-contenido::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 1px;
+            background: var(--rosa-premium);
+            margin: 35px auto 0;
+            opacity: 0.3;
+        }
+
+        .seccion-contenido:last-of-type::after {
+            display: none;
+        }
+
+        .nombre-vip {
+            font-family: 'Alex Brush', cursive;
+            font-size: 4.8rem;
+            color: #b74776;
+            line-height: 1.1;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+        }
+
+        .subtitulo-vip {
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #8c5374;
+            margin-bottom: 25px;
+        }
+
+        .frase-vip {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            font-style: italic;
+            color: #4a4a4a;
+            padding: 0 10px;
+        }
+
+        .titulo-seccion-vip {
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #3a2832;
+            margin-bottom: 25px;
+        }
+
+        .tarjeta-vip {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 25px 20px;
+            box-shadow: 0 8px 25px rgba(183, 71, 118, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .tarjeta-vip strong {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #b74776;
+            margin-bottom: 6px;
+        }
+
+        .tarjeta-vip p {
+            font-size: 1.05rem;
+            color: var(--texto-dark);
+            font-weight: 500;
+        }
+
+        .tarjeta-vip strong:not(:first-child) {
+            margin-top: 22px;
+        }
+
+        /* --- CONTADOR --- */
+        .contador-vip {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .caja-tiempo-vip {
+            background: rgba(255, 255, 255, 0.8);
+            width: 72px;
+            padding: 12px 0;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 125, 163, 0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .num-vip {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #b74776;
+            display: block;
+        }
+
+        .lbl-vip {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* --- NUEVO MÓDULO DE ASISTENCIA ESTILO PREMIUM --- */
+        .bloque-confirmacion {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px 15px;
+            box-shadow: 0 10px 30px rgba(183, 71, 118, 0.08);
+            border: 1px solid rgba(212, 125, 163, 0.15);
+            text-align: center;
+        }
+
+        .titulo-confirmacion {
+            font-size: 1.3rem;
+            color: #c4628d;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            margin-bottom: 2px;
+        }
+
+        .subtitulo-confirmacion {
+            font-size: 1.1rem;
+            color: #c4628d;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .layout-tarjeta-pase {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 12px;
+            text-align: left;
+        }
+
+        /* Columna Izquierda: El Pase */
+        .columna-pase {
+            background: #fffcfd;
+            border: 1px dashed rgba(212, 125, 163, 0.4);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 5px;
+            text-align: center;
+            position: relative;
+        }
+
+        .icono-sobre {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: var(--rosa-premium);
+        }
+
+        .txt-pase-titulo {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #b74776;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .txt-pase-limite {
+            font-size: 0.6rem;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        /* Columna Derecha: Campos */
+        .columna-campos {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-asistencia {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e1d5db;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: var(--texto-dark);
+            outline: none;
+            background: #fafafa;
+            transition: all 0.3s;
+        }
+
+        .input-asistencia:focus {
+            border-color: var(--rosa-premium);
+            background: #ffffff;
+        }
+
+        /* Selector de Personas Redondo */
+        .contenedor-selector-personas {
+            background: #fafafa;
+            border: 1px solid #e1d5db;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .lbl-selector-personas {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .opciones-numeros {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-numero {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #d1c4cb;
+            background: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-numero.seleccionado {
+            background: #d47da3;
+            border-color: #d47da3;
+            color: #ffffff;
+            box-shadow: 0 3px 8px rgba(212, 125, 163, 0.4);
+        }
+
+        /* Botones de Selección de Estado (Asistiré / No podré) */
+        .wrapper-botones-asistencia {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .btn-estado {
+            padding: 11px 5px;
+            border: 1px solid #d47da3;
+            border-radius: 8px;
+            background: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #b74776;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-estado.activo {
+            background: #fff0f5;
+            border-width: 2px;
+        }
+
+        /* Botón de Envío Principal Abajo */
+        .btn-enviar-confirmacion {
+            width: 100%;
+            padding: 14px;
+            background: #e3b0c8;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-enviar-confirmacion.listo-para-enviar {
+            background: #b74776;
+            box-shadow: 0 4px 12px rgba(183, 71, 118, 0.25);
+        }
+
+        /* --- BOTÓN MOMENTOS FELICES --- */
+        .btn-momentos {
+            background: #b74776;
+            color: var(--blanco);
+            padding: 15px 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 6px 20px rgba(183, 71, 118, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .btn-momentos:active {
+            transform: scale(0.97);
+            box-shadow: 0 3px 10px rgba(183, 71, 118, 0.2);
+        }
+
+        /* --- GALERÍA DESPLEGABLE --- */
+        .contenedor-galeria-desplegable {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+        }
+
+        .contenedor-galeria-desplegable.abierto {
+            max-height: 800px;
+            margin-top: 25px;
+        }
+
+        .grid-galeria-vip {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 5px;
+        }
+
+        .grid-galeria-vip img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+        }
+
+        .contenedor-galeria-desplegable.abierto .grid-galeria-vip img {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .iconos-vestimenta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 2.2rem;
+            margin: 15px 0;
+        }
+
+        /* --- FOOTER --- */
+        .footer-vip {
+            background: #261720;
+            color: rgba(255,255,255,0.6);
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @keyframes girarMusica {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor-corazones-global" id="corazonesFondo"></div>
+
+<div id="pantalla-bienvenida">
+    <div class="zona-acceso-bienvenida">
+        <h2 class="titulo-bienvenida-texto">Bienvenidos a<br>mis XV Años</h2>
+        <button class="btn-abrir-invitacion" onclick="entrarALaTarjeta()">
+            Ingresar ✉️
+        </button>
+    </div>
+</div>
+
+<div class="wrapper-vip" id="contenedorPrincipal">
+    
+    <audio id="musicaFondo" loop preload="auto" playsinline>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="audio-container-vip">
+        <button class="btn-audio-vip" id="btnAudioVip" onclick="controlarMusica()">🎵</button>
+    </div>
+
+    <section class="seccion-portada">
+        <img src="portada.png" alt="Luciana" class="img-portada-vip">
+    </section>
+
+    <section class="seccion-contenido">
+        <h1 class="nombre-vip">Luciana</h1>
+        <div class="subtitulo-vip">Mis XV Años</div>
+        <p class="frase-vip">
+            "Con el corazón lleno de sueños y emociones, doy la bienvenida a una nueva etapa de mi vida. Hoy celebro mis quince años rodeada de las personas que más amo, creando recuerdos que brillarán para siempre."
+        </p>
+    </section>
+
+    <section class="seccion-contenido">
+        <h2 class="titulo-seccion-vip">Con la bendición de Dios y el amor de mis padres</h2>
+        <div class="tarjeta-vip">
+            <strong>Padres</strong>
+            <p>Lucia Rivera F. & Carlos Zapata F.</p>
+            
+            <strong>Y la compañía de mis Padrinos</strong>
+            <p>Alexis Carbajal y David Zapata</p>
+        </div>
+    </section>
+
+    <section class="seccion-contenido">
+        <h2 class="titulo-seccion-vip">El Gran Día Ya Vine</h2>
+        <div class="contador-vip" id="contador">
+            <div class="caja-tiempo-vip"><span class="num-vip" id="dias">00</span><span class="lbl-vip">Días</span></div>
+            <div class="caja-tiempo-vip"><span class="num-vip" id="horas">00</span><span class="lbl-vip">Horas</span></div>
+            <div class="caja-tiempo-vip"><span class="num-vip" id="minutos">00</span><span class="lbl-vip">Min</span></div>
+            <div class="caja-tiempo-vip"><span class="num-vip" id="segundos">00</span><span class="lbl-vip">Seg</span></div>
+        </div>
+    </section>
+
+    <section class="seccion-contenido">
+        <h2 class="titulo-seccion-vip">Ubicación y Horario</h2>
+        <div class="tarjeta-vip">
+            <strong>Fecha</strong>
+            <p>📅 29 de Agosto de 2026</p>
+            
+            <strong>Horario</strong>
+            <p>⏰ 7:30 pm</p>
+            
+            <strong>Recepción</strong>
+ 
+            <p> [Atípico Club] 📍
+            
+            <!-- Botón de navegación -->
+            <a href="https://maps.app.goo.gl/amnebA1eGCcbz5L2A" target="_blank" 
+               style="display: inline-block; margin-top: 10px; padding: 6px 15px; background: #d47da3; color: white; text-decoration: none; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">
+               Cómo llegar
+            </a>
+
+	 </div>
+    </section>
+
+    <section class="seccion-contenido">
+        <h2 class="titulo-seccion-vip">Código de Vestimenta</h2>
+        <div class="tarjeta-vip" style="margin-bottom: 25px;">
+            <div class="iconos-vestimenta">👗 👔</div>
+            <p>Todos</p>
+            <span style="font-size:0.75rem; color:#666; display:block; margin-top:5px;">Formal / Elegante</span>
+        </div>
+
+        <div class="bloque-confirmacion">
+ <h3 class="titulo-confirmacion">Confirma tu asistencia</h3>
+<p class="subtitulo-confirmacion">¡Estás invitado!</p>
+
+<div style="
+    margin:15px 0;
+    padding:12px;
+    background:#fff4f8;
+    border:1px solid #f3c5d7;
+    border-radius:10px;
+    color:#8a4f65;
+    font-size:14px;
+    text-align:center;
+    line-height:1.5;
+">
+💖 Te agradeceremos confirmar tu asistencia hasta el sábado 15 de agosto de 2026. Después de esta fecha cerraremos la lista de invitados, por lo que solo podrán ingresar las personas registradas previamente.
+</div>
+
+            <form id="formConfirmacionPremium" onsubmit="procesarConfirmacion(event)">
+                <div class="layout-tarjeta-pase">
+                    
+                    <div class="columna-pase">
+                        <div class="icono-sobre">✉️</div>
+                        <span class="txt-pase-titulo">Invitación<br>con pase</span>
+                        <span class="txt-pase-limite">Hasta 2 personas</span>
+                    </div>
+
+                    <div class="columna-campos">
+                        <input type="text" id="nombreCompleto" class="input-asistencia" placeholder="Nombre de invitado o familia" required>
+                        
+                        <div class="contenedor-selector-personas">
+                            <span class="lbl-selector-personas">¿Cuántas personas asistirán?</span>
+                            <div class="opciones-numeros">
+                                <button type="button" class="btn-numero seleccionado" onclick="seleccionarInvitados(1)">1</button>
+                                <button type="button" class="btn-numero" onclick="seleccionarInvitados(2)">2</button>
+                            </div>
+                        </div>
+
+                        <input type="text" id="mensajeOpcional" class="input-asistencia" placeholder="Mensaje (opcional)">
+                    </div>
+                </div>
+
+                <div class="wrapper-botones-asistencia">
+                    <button type="button" id="btnAsistire" class="btn-estado activo" onclick="cambiarEstadoAsistencia(true)">¡Sí, asistiré!</button>
+                    <button type="button" id="btnNoAsistire" class="btn-estado" onclick="cambiarEstadoAsistencia(false)">No podré asistir</button>
+                </div>
+
+                <button type="submit" class="btn-enviar-confirmacion listo-para-enviar" id="btnSubmitPrincipal">Enviar confirmación</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="seccion-contenido">
+        <h2 class="titulo-seccion-vip">Mis Momentos Felices</h2>
+        <button class="btn-momentos" onclick="toggleGaleria()">✨ Galeria Fotográfica ✨</button>
+        <div class="contenedor-galeria-desplegable" id="galeriaDesplegable">
+            <div class="grid-galeria-vip">
+                <img src="foto1.jpeg" alt="Momento 1" style="transition-delay: 0.1s;">
+                <img src="foto2.jpeg" alt="Momento 2" style="transition-delay: 0.2s;">
+                <img src="foto3.jpeg" alt="Momento 3" style="transition-delay: 0.3s;">
+                <img src="foto4.jpeg" alt="Momento 4" style="transition-delay: 0.4s;">
+                <img src="foto5.jpeg" alt="Momento 5" style="transition-delay: 0.5s;">
+                <img src="foto6.jpeg" alt="Momento 6" style="transition-delay: 0.6s;">
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-vip">
+        <p>Luciana · 29.08.2026</p>
+    </footer>
+
+</div>
+
+<script>
+    // --- VARIABLES DE CONTROL DEL FORMULARIO ---
+    let cantidadInvitados = 1;
+    let confirmacionAsistencia = true; // true = asistirá, false = no asistirá
+
+    function seleccionarInvitados(numero) {
+        cantidadInvitados = numero;
+        const botones = document.querySelectorAll('.btn-numero');
+        botones.forEach((btn, index) => {
+            if (index + 1 === numero) {
+                btn.classList.add('seleccionado');
+            } else {
+                btn.classList.remove('seleccionado');
+            }
+        });
+    }
+
+    function cambiarEstadoAsistencia(estado) {
+        confirmacionAsistencia = estado;
+        const btnAsistire = document.getElementById('btnAsistire');
+        const btnNoAsistire = document.getElementById('btnNoAsistire');
+        
+        if (estado) {
+            btnAsistire.classList.add('activo');
+            btnNoAsistire.classList.remove('activo');
+        } else {
+            btnNoAsistire.classList.add('activo');
+            btnAsistire.classList.remove('activo');
+        }
+    }
+
+    // --- LOGICA DE ENVÍO SIMULTÁNEO A GOOGLE FORMS Y WHATSAPP ---
+    function procesarConfirmacion(event) {
+    event.preventDefault();
+
+    const fechaLimite = new Date("2026-08-15T23:59:59");
+
+    if (new Date() > fechaLimite) {
+        alert("⚠️ El plazo de confirmación finalizó el 15 de agosto de 2026.");
+        return;
+    }
+
+    const nombreVal = document.getElementById("nombreCompleto").value.trim();
+
+    if (!nombreVal) {
+        alert("Por favor ingresa tu nombre.");
+        return;
+    }
+
+    const mensajeVal = document.getElementById('mensajeOpcional').value.trim() || "";
+    const respuestaAsistencia = confirmacionAsistencia ? "Asistire" : "No Asistire";
+    
+    const formData = new FormData();
+
+formData.append("entry.1879956224", nombreVal);
+formData.append("entry.433579987", respuestaAsistencia);
+
+if (confirmacionAsistencia) {
+    formData.append("entry.1082190551", cantidadInvitados.toString());
+}
+
+formData.append("entry.1727853289", mensajeVal);
+
+    fetch(
+        "https://docs.google.com/forms/d/e/1FAIpQLSfj8dfn7xEhP8rEeZ-DagGSfCowutU6fyeNMXe8-4rn1YcUCw/formResponse",
+        {
+            method: "POST",
+            mode: "no-cors",
+            body: formData
+        }
+    )
+    .then(() => {
+
+    if (confirmacionAsistencia) {
+        alert("✨ ¡Gracias por confirmar! Será un honor compartir contigo este momento tan especial.");
+    } else {
+        alert("💖 Gracias por informarnos. Aunque no puedas acompañarnos, te llevaremos en nuestros corazones en esta fecha tan especial.");
+    }
+
+    document.getElementById("formConfirmacionPremium").reset();
+
+    cantidadInvitados = 1;
+    seleccionarInvitados(1);
+
+    confirmacionAsistencia = true;
+    cambiarEstadoAsistencia(true);
+})
+    .catch(() => {
+        alert("❌ No se pudo enviar la confirmación.");
+    });
+}
+    
+
+    // --- EFECTO DE LLUVIA GLOBAL CONTINUA ---
+    const contenedorCorazones = document.getElementById("corazonesFondo");
+    const iconosCorazon = ["♥", "💖", "💕", "♥"];
+
+    for (let i = 0; i < 35; i++) {
+        let corazon = document.createElement("div");
+        corazon.classList.add("corazon-lluvia");
+        corazon.innerText = iconosCorazon[Math.floor(Math.random() * iconosCorazon.length)];
+        corazon.style.left = Math.random() * 100 + "vw";
+        corazon.style.top = Math.random() * -20 + "px";
+        corazon.style.animationDuration = (Math.random() * 3 + 3.5) + "s";
+        corazon.style.animationDelay = Math.random() * 5 + "s";
+        corazon.style.fontSize = (Math.random() * 0.6 + 0.6) + "rem";
+        contenedorCorazones.appendChild(corazon);
+    }
+
+    // --- ACCIÓN DE INGRESO Y RE-HABILITACIÓN DEL SCROLL ---
+    const musica = document.getElementById("musicaFondo");
+    const btnAudio = document.getElementById("btnAudioVip");
+    const contenedorPrincipal = document.getElementById("contenedorPrincipal");
+
+    function entrarALaTarjeta() {
+        const bienvenida = document.getElementById("pantalla-bienvenida");
+        contenedorPrincipal.style.display = "block";
+        document.documentElement.style.overflow = "auto";
+        document.body.style.overflow = "auto";
+        document.documentElement.style.height = "auto";
+        document.body.style.height = "auto";
+        bienvenida.style.opacity = "0";
+        bienvenida.style.transform = "scale(1.02)";
+        setTimeout(() => { bienvenida.style.display = "none"; }, 800);
+        reproducirAudio();
+    }
+
+    function reproducirAudio() {
+        musica.play()
+            .then(() => {
+                btnAudio.classList.add("playing");
+                btnAudio.innerText = "⏸";
+            })
+            .catch(e => console.log("Permiso de audio en espera"));
+    }
+
+    function controlarMusica() {
+        if (musica.paused) { reproducirAudio(); } 
+        else {
+            musica.pause();
+            btnAudio.classList.remove("playing");
+            btnAudio.innerText = "🎵";
+        }
+    }
+
+    function toggleGaleria() {
+        const galeria = document.getElementById("galeriaDesplegable");
+        galeria.classList.toggle("abierto");
+        if(galeria.classList.contains("abierto")) {
+            setTimeout(() => { galeria.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
+        }
+    }
+
+    // --- CUENTA REGRESIVA ---
+    const fechaEvento = new Date("August 29, 2026 19:30:00").getTime();
+    setInterval(function() {
+        const ahora = new Date().getTime();
+        const distancia = fechaEvento - ahora;
+        if (distancia < 0) {
+            document.getElementById("contador").innerHTML = "<p style='color:#b74776; font-weight:600;'>¡Hoy es el gran día!</p>";
+            return;
+        }
+        const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+        document.getElementById("dias").innerText = dias < 10 ? "0" + dias : dias;
+        document.getElementById("horas").innerText = horas < 10 ? "0" + horas : horas;
+        document.getElementById("minutos").innerText = minutos < 10 ? "0" + minutos : minutos;
+        document.getElementById("segundos").innerText = segundos < 10 ? "0" + segundos : segundos;
+    }, 1000);
+
+window.addEventListener("load", function () {
+
+const fechaLimite = new Date(2026, 7, 15, 23, 59, 59);
+
+console.log("Fecha actual:", new Date());
+console.log("Fecha límite:", fechaLimite);
+console.log("¿Expirada?:", new Date() > fechaLimite);
+
+
+    if (new Date() > fechaLimite) {
+
+        const botonEnviar = document.getElementById("btnSubmitPrincipal");
+
+        botonEnviar.disabled = true;
+        botonEnviar.innerHTML = "Confirmaciones cerradas";
+        botonEnviar.style.opacity = "0.6";
+        botonEnviar.style.cursor = "not-allowed";
+
+        const aviso = document.createElement("div");
+
+        aviso.innerHTML =
+        "⚠️ El plazo para confirmar asistencia finalizó el 15 de agosto de 2026. La lista de invitados ha sido cerrada.";
+
+        aviso.style.cssText = `
+            margin-top:15px;
+            padding:12px;
+            background:#fff4f8;
+            border:1px solid #f3c5d7;
+            border-radius:10px;
+            color:#8a4f65;
+            font-size:14px;
+            text-align:center;
+            line-height:1.5;
+        `;
+
+        document.getElementById("formConfirmacionPremium").appendChild(aviso);
+    }
+
+});
+
+
+</script>
+
+</body>
+</html>
