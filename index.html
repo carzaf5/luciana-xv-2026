@@ -679,7 +679,13 @@
                     </div>
 
                     <div class="columna-campos">
-                        <input type="text" id="nombreCompleto" class="input-asistencia" placeholder="Nombre de invitado o familia" required>
+                        <input
+    type="text"
+    id="nombreCompleto"
+    class="input-asistencia"
+    placeholder="Nombre y apellidos completos"
+    required
+>
                         
                         <div class="contenedor-selector-personas">
                             <span class="lbl-selector-personas">¿Cuántas personas asistirán?</span>
@@ -768,10 +774,21 @@
 
     const nombreVal = document.getElementById("nombreCompleto").value.trim();
 
-    if (!nombreVal) {
-        alert("Por favor ingresa tu nombre.");
-        return;
-    }
+if (!nombreVal) {
+    mostrarMensaje(
+        "👤<br><br>Por favor ingresa el nombre y apellidos completos del invitado."
+    );
+    return;
+}
+
+const palabras = nombreVal.split(" ").filter(p => p.length > 0);
+
+if (palabras.length < 3) {
+   mostrarMensaje(
+    "👑<br><br>Por favor ingresa el Nombre y Apellidos completos del invitado."
+);
+    return;
+}
 
     const mensajeVal = document.getElementById('mensajeOpcional').value.trim() || "";
     const respuestaAsistencia = confirmacionAsistencia ? "Asistire" : "No Asistire";
@@ -798,10 +815,14 @@ formData.append("entry.1727853289", mensajeVal);
     .then(() => {
 
     if (confirmacionAsistencia) {
-        alert("✨ ¡Gracias por confirmar! Será un honor compartir contigo este momento tan especial.");
-    } else {
-        alert("💖 Gracias por informarnos. Aunque no puedas acompañarnos, te llevaremos en nuestros corazones en esta fecha tan especial.");
-    }
+    mostrarMensaje(
+        "✨ ¡Gracias por confirmar!<br><br>Será un honor compartir contigo este momento tan especial."
+    );
+} else {
+    mostrarMensaje(
+        "💖 Gracias por informarnos.<br><br>Aunque no puedas acompañarnos, te llevaremos en nuestros corazones en esta fecha tan especial."
+    );
+}
 
     document.getElementById("formConfirmacionPremium").reset();
 
@@ -816,6 +837,50 @@ formData.append("entry.1727853289", mensajeVal);
     });
 }
     
+
+
+function mostrarMensaje(texto) {
+
+    const mensajeExistente = document.getElementById("mensajeConfirmacion");
+
+    if (mensajeExistente) {
+        mensajeExistente.remove();
+    }
+
+    const mensaje = document.createElement("div");
+    mensaje.id = "mensajeConfirmacion";
+
+    mensaje.innerHTML = texto;
+
+    mensaje.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 0 25px rgba(0,0,0,.2);
+        text-align: center;
+        max-width: 350px;
+        width: 90%;
+        z-index: 99999;
+        font-size: 18px;
+        line-height: 1.6;
+        color: #b74776;
+        font-weight: 500;
+    `;
+
+    document.body.appendChild(mensaje);
+
+    setTimeout(() => {
+        mensaje.remove();
+    }, 5000);
+}
+
+
+
+
 
     // --- EFECTO DE LLUVIA GLOBAL CONTINUA ---
     const contenedorCorazones = document.getElementById("corazonesFondo");
