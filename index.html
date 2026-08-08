@@ -666,7 +666,7 @@
     text-align:center;
     line-height:1.5;
 ">
-💖 Te agradeceremos confirmar tu asistencia hasta el sábado 15 de agosto de 2026. Después de esta fecha cerraremos la lista de invitados, por lo que solo podrán ingresar las personas registradas previamente.
+💖 Te agradeceremos confirmar tu asistencia hasta el jueves 20 de agosto del 2026. Después de esta fecha cerraremos la lista de invitados, por lo que solo podrán ingresar las personas registradas previamente.
 </div>
 
             <form id="formConfirmacionPremium" onsubmit="procesarConfirmacion(event)">
@@ -765,10 +765,10 @@
     function procesarConfirmacion(event) {
     event.preventDefault();
 
-    const fechaLimite = new Date("2026-08-15T23:59:59");
+    const fechaLimite = new Date("2026-08-20T23:59:59");
 
     if (new Date() > fechaLimite) {
-        alert("⚠️ El plazo de confirmación finalizó el 15 de agosto de 2026.");
+        alert("⚠️ El plazo de confirmación finalizó el 20 de agosto de 2026.");
         return;
     }
 
@@ -964,7 +964,7 @@ function mostrarMensaje(texto) {
 
 window.addEventListener("load", function () {
 
-const fechaLimite = new Date(2026, 7, 15, 23, 59, 59);
+const fechaLimite = new Date(2026, 7, 20, 23, 59, 59);
 
 console.log("Fecha actual:", new Date());
 console.log("Fecha límite:", fechaLimite);
